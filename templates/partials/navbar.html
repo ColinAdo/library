@@ -1,6 +1,16 @@
+{% load static %}
+
 <ul>
     {% if request.user.is_authenticated %}
     <li><a href="{% url 'home' %}">Home</a></li>
+    <div class="dropdown">
+        <li>Categories</li>
+        <div class="dropdown-content">
+        {% for c in categories %}
+        <li><a href="{% url 'category_books' c.cid %}">{{c.title}}</a></li>
+        {% endfor %}
+        </div>
+    </div>
     <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
     {% endif %}
 </ul>
