@@ -1,4 +1,6 @@
 from django import forms
+from django.forms.widgets import ClearableFileInput
+from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
@@ -11,3 +13,14 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'password1', 'password2']
+
+class CustomFileInput(ClearableFileInput):
+    initial_text = _('') 
+    input_text = _('Change')
+    clear_checkbox_label = ''
+
+class ProfileFrom(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['profile_pic', 'career', 'location']
+        

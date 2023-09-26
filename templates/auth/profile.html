@@ -1,0 +1,24 @@
+{% extends 'partials/base.html' %}
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+    <h2>Profile</h2>
+    <div class="dropdown">
+        <img src="{{p.profile_pic.url}}" alt="{{p.username}}" width="100" height="100">
+        <div class="dropdown-content">
+        <img src="{{p.profile_pic.url}}" alt="{{p.username}}" width="300" height="300">
+        <div>{{p.username}}</div>
+    </div>
+    </div>
+    <div>username: {{p.username}}</div>
+    {% if p.career %}
+        <div>Profession: {{p.career}}</div>
+    {% endif %}
+    {% if p.location %}
+        <div>Location: {{p.location}}</div>
+    {% endif %}
+
+     {% if request.user.username == p.username %}
+        <div><a href="{% url 'setting' p.username %}">Settings</a></div>
+    {% endif %}
+{% endblock content %}
