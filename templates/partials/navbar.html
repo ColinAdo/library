@@ -11,6 +11,7 @@
         {% endfor %}
         </div>
     </div>
+    <li><a href="{% url 'profile' p.username %}">Profile</a></li>
     <li><a href="{% url 'sign_out' %}">Sign Out</a></li>
     {% endif %}
 </ul>

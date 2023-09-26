@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm
+from .forms import RegisterForm, ProfileFrom
+from .models import CustomUser
 
 def sign_up(request):
     template = 'auth/sign-up.html'
@@ -29,7 +30,6 @@ def sign_up(request):
     }
     return render(request, template, context)
 
-
 def sign_in(request):
     template = 'auth/sign-in.html'
     if request.method == 'POST':
@@ -51,3 +51,30 @@ def sign_out(request):
     logout(request)
     messages.success(request, 'You logged out')
     return redirect('sign_in')
+
+def profile(request, username):
+    template = 'auth/profile.html'
+    p = get_object_or_404(CustomUser, username=username)
+    context = {
+        'p': p
+    }
+    return render(request, template, context)
+
+def setting(request, username):
+    template = 'auth/setting.html'
+    preloaded_data = CustomUser.objects.get(username=username)
+
+    if request.method == 'POST':
+        form = ProfileFrom(request.POST, request.FILES, instance=preloaded_data)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile Updated successfully')
+            return redirect('setting', username)
+    else:
+        form = ProfileFrom(instance=preloaded_data)
+
+    context = {
+        'form': form,
+        'preloaded_data': preloaded_data
+    }
+    return render(request, template, context)

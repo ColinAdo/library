@@ -10,11 +10,11 @@ CAREER = (
 )
 
 LOCATION = (
-    ('kenya', 'Nairobi, Kenya'),
-    ('uganda', 'Kampala, Uganda'),
-    ('nigeria', 'Lagos, Nigeria'),
-    ('egypt', 'Cairo, Egypt'),
-    ('Eritrea', 'Asmara, Eritrea'),
+    ('Nairobi, Kenya', 'Nairobi, Kenya'),
+    ('Kampala, Uganda', 'Kampala, Uganda'),
+    ('Lagos, Nigeria', 'Lagos, Nigeria'),
+    ('Cairo, Egypt', 'Cairo, Egypt'),
+    ('Asmara, Eritrea', 'Asmara, Eritrea'),
 )
 
 
@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=200)
     profile_pic = models.ImageField(default='profile.png', upload_to='profile', null=True, blank=True)
     career = models.CharField(null=True, blank=True, choices=CAREER, max_length=100)
-    loacation = models.CharField(null=True, blank=True, choices=LOCATION, max_length=100)
+    location = models.CharField(null=True, blank=True, choices=LOCATION, max_length=100)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
