@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Book, Category
+from django.db.models import Q
+from .models import Book, Category, Review
+from userAuths.models import CustomUser
 
 def home(request):
     template = 'core/index.html'
@@ -27,3 +29,21 @@ def category_book(request, category_id):
         'category': category
     }
     return render(request, template, context)
+
+def search(request):
+    template = 'core/search.html'
+    query = request.GET.get('q')
+
+    users = CustomUser.objects.filter(username__icontains=query)
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query)).order_by('-date_posted')
+    categories = Category.objects.filter(title__icontains=query).order_by('-date')
+    reviews = Review.objects.filter(comment__icontains=query).order_by('-date')
+
+    conetxt = {
+        'users': users,
+        'books': books,
+        'categories': categories,
+        'reviews': reviews,
+        'query': query,
+    }
+    return render(request, template, conetxt)

@@ -1,0 +1,67 @@
+{% extends 'partials/base.html' %}
+
+{% block title %} Search {% endblock title %}
+
+{% block content %}
+{% if query %}
+    <h5>Results for {{query}}</h5>
+    {% else %}
+    <h5>Nothing is being searched</h5>
+{% endif %}
+<!-- Books -->
+{% if books %}
+    <h4>Book{{books.count|pluralize}} ({{books.count}})</h4>
+{% endif %}
+{% for b in books %}
+    <a href="{% url 'book_details' b.bid %}">
+    <div class="dropdown"> 
+        <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="100" height="100" >
+        <div class="dropdown-content">
+            <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="300" height="300" >
+            <div>{{b.title}}</div>
+        </div>
+     </div>
+    <div>{{b.title}}</div>
+    </a>
+    {% endfor %}
+<!-- Categories -->
+{% if categories %}
+    <h4>Category{{categories.count|pluralize}} ({{categories.count}})</h4>
+{% endif %}
+<div>
+    {% for c in categories %}
+        <li><a href="{% url 'category_books' c.cid %}">{{c.title}}</a></li>
+    {% endfor %}
+</div>
+
+<!-- Reviews -->
+{% if reviews %}
+    <h4>Review{{reviews.count|pluralize}} ({{reviews.count}})</h4>
+{% endif %}
+<div>
+    {% for r in reviews %}
+    <a href="{% url 'profile' r.user.username %}">
+        <img src="{{r.user.profile_pic.url}}" alt="{{r.user.username}}" width="50" height="50">
+    </a>
+    
+    <h4>{{r.user.username}} made review on Book called <a href="{% url 'book_details' r.book.bid %}">{{r.book.title}}</a></h4>
+    <small>{{r.date}}</small>
+    <p>{{r.comment}}</p>
+    {% endfor %}
+</div>
+<!-- Users -->
+{% if users %}
+    <h4>User{{users.count|pluralize}} ({{users.count}})</h4>
+{% endif %}
+
+{% for p in users %}
+<div class="dropdown">
+    <a href="{% url 'profile' p.username %}">
+        <img src="{{p.profile_pic.url}}" alt="{{p.username}}" width="100" height="100">
+        <div>{{p.username}}</div>
+        <div class="dropdown-content">
+        <img src="{{p.profile_pic.url}}" alt="{{p.username}}" width="300" height="300">
+    </a>
+</div>
+{% endfor %}
+{% endblock content %}
