@@ -15,4 +15,31 @@
     <div><b>Posted On:</b> {{b.date_posted}}</div>
     <div><b>Description:</b> {{b.description}}</div>
     <div><a href="{{b.pdf_file.url}}">Begin To Read</a></div>
+
+    <h2>Review{{reviews.count|pluralize}} ({{reviews.count}})</h2>
+
+    {% for r in reviews %}
+    <div>
+        <a href="{% url 'profile' r.user.username %}">
+            <img src="{{r.user.profile_pic.url}}" alt="{{r.user.username}}" width="50" height="50">
+        
+        <br>
+        <span><b>{{r.user.username}}</b></span>
+        </a>
+        <span>{{r.date}}</span>
+        <p>{{r.comment}}</p>
+    </div>
+    {% endfor %}
+
+    {% for message in messages %}
+        {% if message %}
+        {{ message }}
+        {% endif %}
+    {% endfor %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.comment}} <br>
+        <button type="submit" >Submit</button>
+    </form>
 {% endblock content %}

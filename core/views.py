@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from django.contrib import messages
 from .models import Book, Category, Review
+from .forms import ReviewForm
 from userAuths.models import CustomUser
 
 def home(request):
@@ -13,9 +15,26 @@ def home(request):
 
 def books_details(request, book_id):
     template = 'core/books-details.html'
+
     b = get_object_or_404(Book, bid=book_id)
+    reviews = Review.objects.filter(book=b).order_by('-date')
+
+    if request.method == 'POST':
+        form =  ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.book = b
+            review.save()
+            messages.success(request, 'Review added successfully')
+            return redirect('book_details', book_id)
+    else:
+        form = ReviewForm()
+
     context = {
-        'b': b
+        'b': b,
+        'reviews': reviews,
+        'form': form,
     }
     return render(request, template, context)
 
