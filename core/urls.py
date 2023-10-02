@@ -11,4 +11,7 @@ urlpatterns = [
 
     # Search url
     path('search/', views.search, name="search"),
+
+    # Reading the pdf
+    path('read-pdf/<str:book_id>/', views.read_pdf, name="read"),
 ]

@@ -1,0 +1,26 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} Reading {% endblock title %}
+
+{% block content %}
+<div id="book-container">
+    <div class="top-bar">
+      <button class="btn" id="prev-page">
+        <i class="fas fa-arrow-circle-left"></i> Prev Page
+      </button>
+      <span class="page-info">
+        Page <span id="page-num"></span> of <span id="page-count"></span>
+      </span>
+      <button class="btn" id="next-page">
+        Next Page <i class="fas fa-arrow-circle-right"></i>
+      </button>
+      
+    </div>
+
+    <canvas id="pdf-render"></canvas>
+    <div id="pdf-container" data-pdf-url="{{ pdf_url}}"></div>
+  </div>
+
+    
+
+{% endblock content %}

@@ -14,7 +14,9 @@
     <div><b>Author:</b> {{b.author}}</div>
     <div><b>Posted On:</b> {{b.date_posted}}</div>
     <div><b>Description:</b> {{b.description}}</div>
-    <div><a href="{{b.pdf_file.url}}">Begin To Read</a></div>
+    
+    <a href="{% url 'read' b.id %}">Begin To Read</a>
+
 
     <h2>Review{{reviews.count|pluralize}} ({{reviews.count}})</h2>
 

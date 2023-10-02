@@ -66,3 +66,13 @@ def search(request):
         'query': query,
     }
     return render(request, template, conetxt)
+
+
+def read_pdf(request, book_id):
+    template = 'core/read.html'
+    book = get_object_or_404(Book, id=book_id)
+
+    pdf_url = book.pdf_file.url
+    context = {'pdf_url': pdf_url}
+
+    return render(request, template, context)
