@@ -19,7 +19,12 @@
             <div>{{b.title}}</div>
         </div>
      </div>
-    <div>{{b.title}}</div>
+    <div>{{b.title}}
+        {% if b.review_count == 0 %} 
+        {% else %}
+        <span>⭐ {{b.review_count}}</span>
+        {% endif %}
+    </div>
     </a>
     {% endfor %}
 

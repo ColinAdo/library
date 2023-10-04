@@ -29,8 +29,36 @@
     {% endfor %}
     {% endif %}
 
-
+{% if reviews %}
+    {% if reviews.count == 0 %}
+    <h2>Add Review</h2>
+    {% else %}
     <h2>Review{{reviews.count|pluralize}} ({{reviews.count}})</h2>
+    {% endif %}
+
+    {% for r in reviews %}
+    <div>
+        <a href="{% url 'profile' r.user.username %}">
+            <img src="{{r.user.profile_pic.url}}" alt="{{r.user.username}}" width="50" height="50">
+        
+        <br>
+        <span><b>{{r.user.username}}</b></span>
+        </a>
+        <span>{{r.date}}</span>
+        <p>{{r.comment}}</p>
+    </div>
+    {% endfor %}
+
+{% else %}
+    {% for p in progress %}
+        {% if p.is_reading %}
+            {% if p.book.bid == b.bid %}
+            
+            {% if reviews.count == 0 %}
+            <h2>Add Review</h2>
+            {% else %}
+            <h2>Review{{reviews.count|pluralize}} ({{reviews.count}})</h2>
+            {% endif %}
 
     {% for r in reviews %}
     <div>
@@ -56,4 +84,10 @@
         {{form.comment}} <br>
         <button type="submit" >Submit</button>
     </form>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    
+{% endif %}
+    
 {% endblock content %}

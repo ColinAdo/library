@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib import messages
 from .models import Book, Category, Review, Progress
 from .forms import ReviewForm
@@ -7,7 +7,7 @@ from userAuths.models import CustomUser
 
 def home(request):
     template = 'core/index.html'
-    books = Book.objects.all().order_by('-date_posted')
+    books = Book.objects.annotate(review_count=Count('review')).order_by('-date_posted')
     context = {
         'books': books
     }
