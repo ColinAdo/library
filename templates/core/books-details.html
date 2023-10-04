@@ -3,11 +3,13 @@
 
 {% block content %}
     <div class="dropdown"> 
+        <a href="{{b.cover_image.url}}">
         <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="100" height="100" > 
         <div class="dropdown-content">
             <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="300" height="300" >
             <div>{{b.title}}</div>
         </div>
+        </a>
     </div>
     <div><b>Category:</b> {{b.category.title}}</div>
     <div><b>Title:</b> {{b.title}}</div>
