@@ -22,7 +22,7 @@ class BookAdmin(admin.ModelAdmin):
 
 
 class ProgressAdmin(admin.ModelAdmin):
-    list_display = ['user', 'book', 'start_date', 'finish_date', 'is_complete']
+    list_display = ['user', 'book', 'start_date', 'finish_date','is_reading' , 'is_complete']
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'book', 'date', 'comment']

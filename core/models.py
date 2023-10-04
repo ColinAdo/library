@@ -39,6 +39,7 @@ class Progress(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now_add=True)
     finish_date = models.DateTimeField(null=True, blank=True)
+    is_reading = models.BooleanField(default=False, null=True)
     is_complete = models.BooleanField(default=False)
 
     def mark_as_complete(self):
@@ -50,11 +51,18 @@ class Progress(models.Model):
         self.finish_date = self.start_date + timedelta(days=7)
         self.save()
 
+    @property
+    def days_remaining(self):
+        if self.finish_date:
+            remaining = self.finish_date - timezone.now()
+            return remaining.days
+        return None
+
     class Meta:
         verbose_name_plural = 'Progresses'
 
     def __str__(self):
-        return self.is_complete
+        return self.book.title
 
 class Review(models.Model):
     rid = ShortUUIDField(max_length=40, unique=True, prefix='review=?', alphabet='ASCdfghijkl167239')

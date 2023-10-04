@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from core.models import Progress
 from .forms import RegisterForm, ProfileFrom
 from .models import CustomUser
 
@@ -55,8 +56,15 @@ def sign_out(request):
 def profile(request, username):
     template = 'auth/profile.html'
     p = get_object_or_404(CustomUser, username=username)
+    
+    try:
+        progress = Progress.objects.filter(user=p)
+    except Progress.DoesNotExist:
+        progress = None
+    
     context = {
-        'p': p
+        'p': p,
+        'progress': progress
     }
     return render(request, template, context)
 

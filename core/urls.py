@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Reading the pdf
     path('read-pdf/<str:book_id>/', views.read_pdf, name="read"),
+    path('read-new-pdf/<str:book_id>/', views.create_and_read, name="create_and_read"),
 ]

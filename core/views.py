@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
-from .models import Book, Category, Review
+from .models import Book, Category, Review, Progress
 from .forms import ReviewForm
 from userAuths.models import CustomUser
 
@@ -15,10 +15,17 @@ def home(request):
 
 def books_details(request, book_id):
     template = 'core/books-details.html'
+    login_user = request.user
+    user = CustomUser.objects.get(username=login_user)
 
     b = get_object_or_404(Book, bid=book_id)
     reviews = Review.objects.filter(book=b).order_by('-date')
 
+    try:
+        progress = Progress.objects.filter(user=user)
+    except Progress.DoesNotExist:
+        progress = None
+   
     if request.method == 'POST':
         form =  ReviewForm(request.POST)
         if form.is_valid():
@@ -35,6 +42,7 @@ def books_details(request, book_id):
         'b': b,
         'reviews': reviews,
         'form': form,
+        'progress': progress,
     }
     return render(request, template, context)
 
@@ -67,12 +75,29 @@ def search(request):
     }
     return render(request, template, conetxt)
 
+def create_and_read(request, book_id):
+    template = 'core/read.html'
+    user = request.user
+    book = get_object_or_404(Book, bid=book_id)
+
+    created = Progress.objects.create(user=user, book=book, is_reading=True)
+    if created:
+        created.set_finish_date()
+        
+    pdf_url = book.pdf_file.url
+    context = {
+        'pdf_url': pdf_url,
+    }
+
+    return render(request, template, context)
 
 def read_pdf(request, book_id):
     template = 'core/read.html'
-    book = get_object_or_404(Book, id=book_id)
+    book = get_object_or_404(Book, bid=book_id)
 
     pdf_url = book.pdf_file.url
-    context = {'pdf_url': pdf_url}
+    context = {
+        'pdf_url': pdf_url,
+    }
 
     return render(request, template, context)

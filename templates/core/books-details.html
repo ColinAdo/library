@@ -14,8 +14,18 @@
     <div><b>Author:</b> {{b.author}}</div>
     <div><b>Posted On:</b> {{b.date_posted}}</div>
     <div><b>Description:</b> {{b.description}}</div>
-    
-    <a href="{% url 'read' b.id %}">Begin To Read</a>
+
+    {% if not progress %}
+        <a href="{% url 'create_and_read' b.bid %}">Begin To Read</a>
+    {% else %}
+    {% for p in progress %}
+        {% if p.is_reading %}
+            {% if p.book.bid == b.bid %}
+            <a href="{% url 'read' b.bid %}">Continue To Read</a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
 
 
     <h2>Review{{reviews.count|pluralize}} ({{reviews.count}})</h2>
