@@ -54,5 +54,5 @@
             <a href="{% url 'read' p.book.bid %}">Continue Reading</a>
         {% endif %} <br>
     {% endfor %}
-       
+       <a href="{% url 'favourite_list' %}">Saved</a>
 {% endblock content %}

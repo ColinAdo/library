@@ -22,6 +22,7 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
+    favourites= models.ManyToManyField(CustomUser, related_name='favorites', blank=True)
     pdf_file = models.FileField(max_length=100, upload_to='books')
     cover_image = models.ImageField(max_length=100, upload_to='books/cover')
     description = models.TextField()

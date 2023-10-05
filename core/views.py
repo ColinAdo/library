@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q, Count
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from .models import Book, Category, Review, Progress
 from .forms import ReviewForm
 from userAuths.models import CustomUser
@@ -38,11 +39,14 @@ def books_details(request, book_id):
     else:
         form = ReviewForm()
 
+    favourite_exists = b.favourites.filter(id=login_user.id).exists()
+
     context = {
         'b': b,
         'reviews': reviews,
         'form': form,
         'progress': progress,
+        'favourite_exists': favourite_exists
     }
     return render(request, template, context)
 
@@ -100,4 +104,24 @@ def read_pdf(request, book_id):
         'pdf_url': pdf_url,
     }
 
+    return render(request, template, context)
+
+def favourite_add(request, book_id):
+    user_id = request.user.id
+    book = get_object_or_404(Book, bid=book_id)
+    if book.favourites.filter(id=user_id).exists():
+        book.favourites.remove(user_id)
+    else:
+        book.favourites.add(user_id)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def favourite_list(request):
+    template = 'core/favourites.html'
+    login_user = request.user
+    p = get_object_or_404(CustomUser, username=login_user.username)
+    books = Book.objects.filter(favourites=login_user).order_by('-date_posted')
+    context = {
+        'p': p,
+        'books': books,
+    }
     return render(request, template, context)

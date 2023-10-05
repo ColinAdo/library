@@ -1,5 +1,4 @@
 ## TODO:
 #### Send the book to the user using their email address
-#### Add read later functionality / wishlist functionality
-#### Display the review form only if the user is reading or completed the book and show the number of reviews of a particular book.
-#### Rview star should be update in real time in the index.html
+#### Review star should be update in real time in the index.html
+#### Create read days countdown eg. Day:Hour:Minute:Second
