@@ -39,6 +39,18 @@
      </div>
     <div>{{b.title}}</div>
     </a>
+    <div>
+        {% if b.likes.count == 0 %}
+        <a href="{% url 'likes_add' b.bid %}">Like Icon</a>
+        {% else %}
+        <a href="{% url 'likes_add' b.bid %}">Unlike Icon {{b.likes.count}}</a>
+        {% endif %}
+
+        {% if b.review_count == 0 %} 
+        {% else %}
+        <span><a href="{% url 'review_list' b.bid %}">Comment Icon {{b.review_set.count}}</a></span>
+        {% endif %}
+    </div>
     <a href="{% url 'favourite_add' b.bid %}">Remove</a> <br> <br>
     {% endfor %} 
 {% endblock content %}

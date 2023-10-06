@@ -56,6 +56,11 @@
             {% endif %}
             
         {% endif %}
+        {% if favourite_exists %}
+                <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+                {% else %}
+                <a href="{% url 'favourite_add' b.bid %}">Save</a>
+                {% endif %}
     {% endfor %}
     {% endif %}
 
