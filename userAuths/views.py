@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from core.models import Progress
+from core.models import Progress, Book
 from .forms import RegisterForm, ProfileFrom
 from .models import CustomUser
 
@@ -58,16 +58,24 @@ def sign_out(request):
 @login_required(login_url='sign_out')
 def profile(request, username):
     template = 'auth/profile.html'
+    login_user = request.user.id
     p = get_object_or_404(CustomUser, username=username)
     
     try:
         progress = Progress.objects.filter(user=p)
     except Progress.DoesNotExist:
         progress = None
+    for pro in progress:
+        b = get_object_or_404(Book, bid=pro.book.bid)
+
+    favourite_exists = b.favourites.filter(id=login_user).exists()
+    likes_exists = b.likes.filter(id=login_user).exists()
     
     context = {
         'p': p,
-        'progress': progress
+        'progress': progress,
+        'likes_exists': likes_exists,
+        'favourite_exists': favourite_exists
     }
     return render(request, template, context)
 

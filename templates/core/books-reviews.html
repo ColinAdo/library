@@ -41,11 +41,7 @@
         {% endif %}
         <a href="{% url 'create_and_read' b.bid %}">Begin To Read</a>
     {% else %}
-        {% if favourite_exists %}
-        <a href="{% url 'favourite_add' b.bid %}">Remove</a>
-        {% else %}
-        <a href="{% url 'favourite_add' b.bid %}">Save</a>
-        {% endif %}
+        
     {% for p in progress %}
         {% if p.is_reading %}
             {% if p.book.bid == b.bid %}
@@ -53,6 +49,13 @@
                 {% else %}
                 Comment Icon {{reviews.count}}</a>
             {% endif %}
+
+            {% if favourite_exists %}
+            <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+            {% else %}
+            <a href="{% url 'favourite_add' b.bid %}">Save</a>
+            {% endif %}
+
             <a href="{% url 'read' b.bid %}">Continue To Read</a>
             {% endif %}
         {% endif %}

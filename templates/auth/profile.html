@@ -20,6 +20,7 @@
 
      {% if request.user.username == p.username %}
         <div><a href="{% url 'setting' p.username %}">Settings</a></div>
+        <a href="{% url 'favourite_list' %}">Saved</a>
     {% endif %}
 
     {% if progress %}
@@ -51,8 +52,27 @@
             <p>Book: {{ p.book.title }}</p>
             <small>Days Remaining To complete The Book: {{ p.days_remaining }} day{{ p.days_remaining|pluralize }}</small>
             <br>
+
+            {% if likes_exists %}
+            <a href="{% url 'likes_add' p.book.bid %}">Unlike Icon {{p.book.likes.count}}</a>
+            {% else %}
+            <a href="{% url 'likes_add' p.book.bid %}">
+                Like Icon 
+                {% if p.book.likes.count == 0 %}
+                {% else %}
+                {{p.book.likes.count}}
+                {% endif %}
+            </a>
+            {% endif %}
+            <a href="{% url 'review_list' p.book.bid %}">Comment Icon {{p.book.review_set.count}}</a>
+            
+            {% if favourite_exists %}
+            <a href="{% url 'favourite_add' p.book.bid %}">Remove Icon</a>
+            {% else %}
+            <a href="{% url 'favourite_add' p.book.bid %}">Save Icon</a>
+            {% endif %}
+            &nbsp;
             <a href="{% url 'read' p.book.bid %}">Continue Reading</a>
         {% endif %} <br>
     {% endfor %}
-       <a href="{% url 'favourite_list' %}">Saved</a>
 {% endblock content %}

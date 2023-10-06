@@ -39,18 +39,19 @@
     
     {% for p in progress %}
         {% if p.is_reading %}
-            {% if favourite_exists %}
-            <a href="{% url 'favourite_add' b.bid %}">Remove</a>
-            {% else %}
-            <a href="{% url 'favourite_add' b.bid %}">Save</a>
-            {% endif %}
-
             {% if p.book.bid == b.bid %}
                 {% if reviews.count == 0 %}
                 <a href="{% url 'review_list' b.bid%}">Comment Icon</a>
                 {% else %}
                 <a href="{% url 'review_list' b.bid%}">Comment Icon {{reviews.count}}</a>
                 {% endif %}
+
+                {% if favourite_exists %}
+                <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+                {% else %}
+                <a href="{% url 'favourite_add' b.bid %}">Save</a>
+                {% endif %}
+                
             <a href="{% url 'read' b.bid %}">Continue To Read</a>
             {% endif %}
             
