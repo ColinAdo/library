@@ -17,6 +17,22 @@
     <div><b>Posted On:</b> {{b.date_posted}}</div>
     <div><b>Description:</b> {{b.description}}</div>
 
+    {% if likes_exists %}
+    {% if b.likes.count == 0 %}
+    {% else %}
+    <a href="{% url 'likes_add' b.bid %}"><span>Unlike Icon 
+            {{b.likes.count}}
+        {% endif %}
+    </span></a>
+    {% else %}
+    <a href="{% url 'likes_add' b.bid %}"><span>Like Icon 
+    {% if b.likes.count == 0 %}
+    {% else %}
+        {{b.likes.count}}
+    {% endif %}
+    </span></a>
+    {% endif %}&nbsp;
+
     {% if favourite_exists %}
     <a href="{% url 'favourite_add' b.bid %}">Remove</a>
     {% else %}

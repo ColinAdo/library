@@ -19,4 +19,7 @@ urlpatterns = [
     # Favourites
     path('add-remove-favourites/<str:book_id>/', views.favourite_add, name="favourite_add"),
     path('favourite-book-list/', views.favourite_list, name="favourite_list"),
+
+    # Likes
+    path('add-remove-like/<str:book_id>/', views.likes_add, name='likes_add'),
 ]

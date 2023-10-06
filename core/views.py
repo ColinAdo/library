@@ -40,13 +40,15 @@ def books_details(request, book_id):
         form = ReviewForm()
 
     favourite_exists = b.favourites.filter(id=login_user.id).exists()
+    likes_exists = b.likes.filter(id=login_user.id).exists()
 
     context = {
         'b': b,
         'reviews': reviews,
         'form': form,
         'progress': progress,
-        'favourite_exists': favourite_exists
+        'favourite_exists': favourite_exists,
+        'likes_exists': likes_exists
     }
     return render(request, template, context)
 
@@ -125,3 +127,13 @@ def favourite_list(request):
         'books': books,
     }
     return render(request, template, context)
+
+def likes_add(request, book_id):
+    login_user = request.user.id
+    book = get_object_or_404(Book, bid=book_id)
+
+    if book.likes.filter(id=login_user).exists():
+        book.likes.remove(login_user)
+    else:
+        book.likes.add(login_user)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])

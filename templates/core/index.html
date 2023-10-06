@@ -19,13 +19,20 @@
             <div>{{b.title}}</div>
         </div>
      </div>
-    <div>{{b.title}}
+    <div>{{b.title}}</div>
+    </a>
+    <div>
+        {% if b.likes.count == 0 %}
+        <a href="{% url 'likes_add' b.bid %}">Like Icon</a>
+        {% else %}
+        <a href="{% url 'likes_add' b.bid %}">Unlike Icon {{b.likes.count}}</a>
+        {% endif %}
+
         {% if b.review_count == 0 %} 
         {% else %}
         <span>⭐ {{b.review_count}}</span>
         {% endif %}
     </div>
-    </a>
     {% endfor %}
 
 
