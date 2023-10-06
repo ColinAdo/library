@@ -49,6 +49,10 @@
     {% for p in progress %}
         {% if p.is_reading %}
             {% if p.book.bid == b.bid %}
+            {% if reviews.count == 0 %}
+                {% else %}
+                Comment Icon {{reviews.count}}</a>
+            {% endif %}
             <a href="{% url 'read' b.bid %}">Continue To Read</a>
             {% endif %}
         {% endif %}
