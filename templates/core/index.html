@@ -30,7 +30,7 @@
 
         {% if b.review_count == 0 %} 
         {% else %}
-        <span>⭐ {{b.review_count}}</span>
+        <span><a href="{% url 'review_list' b.bid %}">Comment Icon {{b.review_count}}</a></span>
         {% endif %}
     </div>
     {% endfor %}

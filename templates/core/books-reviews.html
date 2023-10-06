@@ -1,0 +1,96 @@
+{% extends 'partials/base.html' %}
+{% block title %} Book Detail {% endblock title %}
+
+{% block content %}
+    <div class="dropdown"> 
+        <a href="{{b.cover_image.url}}">
+        <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="100" height="100" > 
+        <div class="dropdown-content">
+            <img src="{{b.cover_image.url}}" alt="{{b.title}}" width="300" height="300" >
+            <div>{{b.title}}</div>
+        </div>
+        </a>
+    </div>
+    <div><b>Category:</b> {{b.category.title}}</div>
+    <div><b>Title:</b> {{b.title}}</div>
+    <div><b>Author:</b> {{b.author}}</div>
+    <div><b>Posted On:</b> {{b.date_posted}}</div>
+    <div><b>Description:</b> {{b.description}}</div>
+
+    {% if likes_exists %}
+    {% if b.likes.count == 0 %}
+    {% else %}
+    <a href="{% url 'likes_add' b.bid %}"><span>Unlike Icon 
+            {{b.likes.count}}
+        {% endif %}
+    </span></a>
+    {% else %}
+    <a href="{% url 'likes_add' b.bid %}"><span>Like Icon 
+    {% if b.likes.count == 0 %}
+    {% else %}
+        {{b.likes.count}}
+    {% endif %}
+    </span></a>
+    {% endif %}&nbsp;
+
+    {% if not progress %}
+        {% if favourite_exists %}
+        <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+        {% else %}
+        <a href="{% url 'favourite_add' b.bid %}">Save</a>
+        {% endif %}
+        <a href="{% url 'create_and_read' b.bid %}">Begin To Read</a>
+    {% else %}
+        {% if favourite_exists %}
+        <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+        {% else %}
+        <a href="{% url 'favourite_add' b.bid %}">Save</a>
+        {% endif %}
+    {% for p in progress %}
+        {% if p.is_reading %}
+            {% if p.book.bid == b.bid %}
+            <a href="{% url 'read' b.bid %}">Continue To Read</a>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+{% if reviews %}
+    {% if reviews.count == 0 %}
+    <h2>Add Review</h2>
+    {% else %}
+    <h2>All Reviews</h2>
+    {% endif %}
+
+    {% for r in reviews %}
+    <div>
+        <a href="{% url 'profile' r.user.username %}">
+            <img src="{{r.user.profile_pic.url}}" alt="{{r.user.username}}" width="50" height="50">
+        
+        <br>
+        <span><b>{{r.user.username}}</b></span>
+        </a>
+        <span>{{r.date}}</span>
+        <p>{{r.comment}}</p>
+    </div>
+    {% endfor %}
+    
+{% endif %}
+
+{% if not user_review %}
+    {% if b.is_reading %}
+        {% for message in messages %}
+        {% if message %}
+        {{ message }}
+        {% endif %}
+    {% endfor %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.comment}} <br>
+        <button type="submit" >Submit</button>
+    </form>
+    {% endif %}
+{% endif %}
+    
+{% endblock content %}

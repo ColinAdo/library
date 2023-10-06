@@ -22,4 +22,7 @@ urlpatterns = [
 
     # Likes
     path('add-remove-like/<str:book_id>/', views.likes_add, name='likes_add'),
+
+    # Review 
+    path('review-list/<str:book_id>/', views.review_list, name='review_list'),
 ]

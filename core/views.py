@@ -27,25 +27,12 @@ def books_details(request, book_id):
     except Progress.DoesNotExist:
         progress = None
    
-    if request.method == 'POST':
-        form =  ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.user = request.user
-            review.book = b
-            review.save()
-            messages.success(request, 'Review added successfully')
-            return redirect('book_details', book_id)
-    else:
-        form = ReviewForm()
-
     favourite_exists = b.favourites.filter(id=login_user.id).exists()
     likes_exists = b.likes.filter(id=login_user.id).exists()
 
     context = {
         'b': b,
         'reviews': reviews,
-        'form': form,
         'progress': progress,
         'favourite_exists': favourite_exists,
         'likes_exists': likes_exists
@@ -137,3 +124,43 @@ def likes_add(request, book_id):
     else:
         book.likes.add(login_user)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def review_list(request, book_id):
+    template = 'core/books-reviews.html'
+    login_user = request.user
+    user = CustomUser.objects.get(username=login_user)
+
+    b = get_object_or_404(Book, bid=book_id)
+    reviews = Review.objects.filter(book=b).order_by('-date')
+    user_review = Review.objects.filter(user=user, book=b).first()
+
+    try:
+        progress = Progress.objects.filter(user=user)
+    except Progress.DoesNotExist:
+        progress = None
+   
+    if request.method == 'POST':
+        form =  ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.book = b
+            review.save()
+            messages.success(request, 'Review added successfully')
+            return redirect('review_list', book_id)
+    else:
+        form = ReviewForm()
+
+    favourite_exists = b.favourites.filter(id=login_user.id).exists()
+    likes_exists = b.likes.filter(id=login_user.id).exists()
+
+    context = {
+        'b': b,
+        'reviews': reviews,
+        'user_review': user_review,
+        'form': form,
+        'progress': progress,
+        'favourite_exists': favourite_exists,
+        'likes_exists': likes_exists,
+    }
+    return render(request, template, context)
