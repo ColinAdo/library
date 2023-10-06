@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from core.models import Progress
 from .forms import RegisterForm, ProfileFrom
 from .models import CustomUser
@@ -48,11 +49,13 @@ def sign_in(request):
     context = {}
     return render(request, template, context)
 
+@login_required(login_url='sign_out')
 def sign_out(request):
     logout(request)
     messages.success(request, 'You logged out')
     return redirect('sign_in')
 
+@login_required(login_url='sign_out')
 def profile(request, username):
     template = 'auth/profile.html'
     p = get_object_or_404(CustomUser, username=username)
@@ -68,6 +71,7 @@ def profile(request, username):
     }
     return render(request, template, context)
 
+@login_required(login_url='sign_out')
 def setting(request, username):
     template = 'auth/setting.html'
     preloaded_data = CustomUser.objects.get(username=username)

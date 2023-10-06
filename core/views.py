@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q, Count
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .models import Book, Category, Review, Progress
 from .forms import ReviewForm
 from userAuths.models import CustomUser
 
+@login_required(login_url='sign_in')
 def home(request):
     template = 'core/index.html'
     books = Book.objects.annotate(review_count=Count('review')).order_by('-date_posted')
@@ -14,6 +16,7 @@ def home(request):
     }
     return render(request, template, context=context)
 
+@login_required(login_url='sign_in')
 def books_details(request, book_id):
     template = 'core/books-details.html'
     login_user = request.user
@@ -39,6 +42,7 @@ def books_details(request, book_id):
     }
     return render(request, template, context)
 
+@login_required(login_url='sign_in')
 def category_book(request, category_id):
     template = 'core/category-books.html'
     category = get_object_or_404(Category, cid=category_id)
@@ -50,6 +54,7 @@ def category_book(request, category_id):
     }
     return render(request, template, context)
 
+@login_required(login_url='sign_in')
 def search(request):
     template = 'core/search.html'
     query = request.GET.get('q')
@@ -68,6 +73,7 @@ def search(request):
     }
     return render(request, template, conetxt)
 
+@login_required(login_url='sign_in')
 def create_and_read(request, book_id):
     template = 'core/read.html'
     user = request.user
@@ -84,6 +90,7 @@ def create_and_read(request, book_id):
 
     return render(request, template, context)
 
+@login_required(login_url='sign_in')
 def read_pdf(request, book_id):
     template = 'core/read.html'
     book = get_object_or_404(Book, bid=book_id)
@@ -95,6 +102,7 @@ def read_pdf(request, book_id):
 
     return render(request, template, context)
 
+@login_required(login_url='sign_in')
 def favourite_add(request, book_id):
     user_id = request.user.id
     book = get_object_or_404(Book, bid=book_id)
@@ -104,6 +112,7 @@ def favourite_add(request, book_id):
         book.favourites.add(user_id)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@login_required(login_url='sign_in')
 def favourite_list(request):
     template = 'core/favourites.html'
     login_user = request.user
@@ -115,6 +124,7 @@ def favourite_list(request):
     }
     return render(request, template, context)
 
+@login_required(login_url='sign_in')
 def likes_add(request, book_id):
     login_user = request.user.id
     book = get_object_or_404(Book, bid=book_id)
@@ -125,6 +135,7 @@ def likes_add(request, book_id):
         book.likes.add(login_user)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@login_required(login_url='sign_in')
 def review_list(request, book_id):
     template = 'core/books-reviews.html'
     login_user = request.user
