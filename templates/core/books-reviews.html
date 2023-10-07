@@ -41,25 +41,20 @@
         {% endif %}
         <a href="{% url 'create_and_read' b.bid %}">Begin To Read</a>
     {% else %}
-        
-    {% for p in progress %}
-        {% if p.is_reading %}
-            {% if p.book.bid == b.bid %}
-            {% if reviews.count == 0 %}
-                {% else %}
-                Comment Icon {{reviews.count}}</a>
-            {% endif %}
-
-            {% if favourite_exists %}
-            <a href="{% url 'favourite_add' b.bid %}">Remove</a>
-            {% else %}
-            <a href="{% url 'favourite_add' b.bid %}">Save</a>
-            {% endif %}
-
-            <a href="{% url 'read' b.bid %}">Continue To Read</a>
-            {% endif %}
+            
+    {% if reviews.count == 0 %}
+        <small>Comment Icon</small>
+        {% else %}
+        Comment Icon {{reviews.count}}
         {% endif %}
-    {% endfor %}
+
+        {% if favourite_exists %}
+        <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+        {% else %}
+        <a href="{% url 'favourite_add' b.bid %}">Save</a>
+        {% endif %}
+            
+        <a href="{% url 'read' b.bid %}">Continue To Read</a>
     {% endif %}
 
 {% if reviews %}
@@ -84,20 +79,20 @@
     
 {% endif %}
 
-{% if not user_review %}
-    {% if b.is_reading %}
+{% if user_review.count == 0 %}
         {% for message in messages %}
-        {% if message %}
-        {{ message }}
-        {% endif %}
-    {% endfor %}
+            {% if message %}
+                {{ message }}
+            {% endif %}
+        {% endfor %}
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form.comment}} <br>
-        <button type="submit" >Submit</button>
-    </form>
-    {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.comment}} <br>
+            <button type="submit" >Submit</button>
+        </form>
 {% endif %}
+
+
     
 {% endblock content %}

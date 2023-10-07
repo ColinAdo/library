@@ -118,9 +118,14 @@ def favourite_list(request):
     login_user = request.user
     p = get_object_or_404(CustomUser, username=login_user.username)
     books = Book.objects.filter(favourites=login_user).order_by('-date_posted')
+
+    book = None
+    for book in books:
+        likes_exists = book.likes.filter(id=login_user.id).exists()
     context = {
         'p': p,
         'books': books,
+        'likes_exists': likes_exists
     }
     return render(request, template, context)
 

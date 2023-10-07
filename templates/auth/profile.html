@@ -24,7 +24,7 @@
     {% endif %}
 
     {% if progress %}
-    <h3>Book You are reading</h3>
+    <h3>Book{{progress.count|pluralize}} You are reading</h3>
     {% endif %}
     
     {% for p in progress %}
@@ -64,8 +64,13 @@
                 {% endif %}
             </a>
             {% endif %}
-            <a href="{% url 'review_list' p.book.bid %}">Comment Icon {{p.book.review_set.count}}</a>
-            
+
+            {% if p.book.review_set.count == 0 %}
+                <a href="{% url 'review_list' p.book.bid %}">Comment Icon</a>
+                {% else %}
+                <a href="{% url 'review_list' p.book.bid %}">Comment Icon {{p.book.review_set.count}}</a>
+            {% endif %}
+
             {% if favourite_exists %}
             <a href="{% url 'favourite_add' p.book.bid %}">Remove Icon</a>
             {% else %}
