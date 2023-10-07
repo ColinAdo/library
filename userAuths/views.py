@@ -18,7 +18,7 @@ def sign_up(request):
             username = form.cleaned_data["username"]
             password1 = form.cleaned_data["password1"]
 
-            new_user = authenticate(username=username, password1=password1)
+            new_user = authenticate(username=username, password=password1, backend='django.contrib.auth.backends.ModelBackend')
 
             login(request, new_user)
             return redirect('home')
