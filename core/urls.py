@@ -13,16 +13,16 @@ urlpatterns = [
     path('search/', views.search, name="search"),
 
     # Reading the pdf
-    path('read-pdf/<str:book_id>/', views.read_pdf, name="read"),
-    path('read-new-pdf/<str:book_id>/', views.create_and_read, name="create_and_read"),
+    path('read/<str:book_id>/', views.read_pdf, name="read"),
+    path('reading/<str:book_id>/', views.create_and_read, name="create_and_read"),
 
     # Favourites
-    path('add-remove-favourites/<str:book_id>/', views.favourite_add, name="favourite_add"),
-    path('favourite-book-list/', views.favourite_list, name="favourite_list"),
+    path('favourites/<str:book_id>/', views.favourite_add, name="favourite_add"),
+    path('favourite/list/', views.favourite_list, name="favourite_list"),
 
     # Likes
-    path('add-remove-like/<str:book_id>/', views.likes_add, name='likes_add'),
+    path('like/<str:book_id>/', views.likes_add, name='likes_add'),
 
     # Review 
-    path('review-list/<str:book_id>/', views.review_list, name='review_list'),
+    path('review/list/<str:book_id>/', views.review_list, name='review_list'),
 ]
