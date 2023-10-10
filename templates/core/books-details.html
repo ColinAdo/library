@@ -34,6 +34,18 @@
     {% endif %}&nbsp;
 
     {% if not progress %}
+        {% if reviews.count == 0 %}
+        <a href="{% url 'review_list' b.bid%}">Comment Icon</a>
+        {% else %}
+        <a href="{% url 'review_list' b.bid%}">Comment Icon {{reviews.count}}</a>
+        {% endif %}
+
+        {% if favourite_exists %}
+        <a href="{% url 'favourite_add' b.bid %}">Remove</a>
+        {% else %}
+        <a href="{% url 'favourite_add' b.bid %}">Save</a>
+        {% endif %}
+        
         <a href="{% url 'create_and_read' b.bid %}">Begin To Read</a>
     {% else %}
         {% if reviews.count == 0 %}
