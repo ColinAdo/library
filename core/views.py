@@ -26,19 +26,26 @@ def books_details(request, book_id):
     reviews = Review.objects.filter(book=b).order_by('-date')
 
     try:
-        progress = Progress.objects.filter(user=user)
+        progress = Progress.objects.get(user=user, book=b, is_complete=False)
     except Progress.DoesNotExist:
         progress = None
+    
+    # Query to check if the user has any ongoing progress
+    ongoing_progress = Progress.objects.filter(user=user, is_complete=False).exists()
+
    
     favourite_exists = b.favourites.filter(id=login_user.id).exists()
     likes_exists = b.likes.filter(id=login_user.id).exists()
+    user_exists = b.readers.filter(id=user.id).exists()
 
     context = {
         'b': b,
         'reviews': reviews,
         'progress': progress,
+        'ongoing_progress': ongoing_progress,
         'favourite_exists': favourite_exists,
-        'likes_exists': likes_exists
+        'likes_exists': likes_exists,
+        'user_exists': user_exists
     }
     return render(request, template, context)
 
@@ -74,14 +81,17 @@ def search(request):
     return render(request, template, conetxt)
 
 @login_required(login_url='sign_in')
-def create_and_read(request, book_id):
+def create_read(request, book_id):
     template = 'core/read.html'
     user = request.user
     book = get_object_or_404(Book, bid=book_id)
 
-    created = Progress.objects.create(user=user, book=book, is_reading=True)
-    if created:
-        created.set_finish_date()
+    if not book.readers.filter(id=user.id).exists():
+        book.readers.add(user.id)
+        created = Progress.objects.create(user=user, book=book, is_reading=True)
+        if created:
+            created.set_finish_date()
+    
         
     pdf_url = book.pdf_file.url
     context = {

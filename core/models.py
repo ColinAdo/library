@@ -24,6 +24,7 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     favourites = models.ManyToManyField(CustomUser, related_name='favorites', blank=True)
     likes = models.ManyToManyField(CustomUser, related_name='likes', blank=True)
+    readers = models.ManyToManyField(CustomUser, related_name='readers', blank=True)
     pdf_file = models.FileField(max_length=100, upload_to='books')
     cover_image = models.ImageField(max_length=100, upload_to='books/cover')
     description = models.TextField()
