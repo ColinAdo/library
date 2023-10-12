@@ -150,7 +150,7 @@ def review_list(request, book_id):
     user_review = Review.objects.filter(user=user, book=b).first()
 
     try:
-        progress = Progress.objects.filter(user=user)
+        progress = Progress.objects.get(user=user, book=b, is_complete=False)
     except Progress.DoesNotExist:
         progress = None
    
@@ -166,8 +166,12 @@ def review_list(request, book_id):
     else:
         form = ReviewForm()
 
+    ongoing_progress = Progress.objects.filter(user=user, is_complete=False).exists()
+
+   
     favourite_exists = b.favourites.filter(id=login_user.id).exists()
     likes_exists = b.likes.filter(id=login_user.id).exists()
+    user_exists = b.readers.filter(id=user.id).exists()
 
     context = {
         'b': b,
@@ -175,7 +179,9 @@ def review_list(request, book_id):
         'user_review': user_review,
         'form': form,
         'progress': progress,
+        'ongoing_progress': ongoing_progress,
         'favourite_exists': favourite_exists,
         'likes_exists': likes_exists,
+        'user_exists': user_exists
     }
     return render(request, template, context)
