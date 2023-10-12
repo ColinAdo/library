@@ -13,8 +13,7 @@ urlpatterns = [
     path('search/', views.search, name="search"),
 
     # Reading the pdf
-    path('read/<str:book_id>/', views.create_read, name="read"),
-    path('reading/<str:book_id>/', views.read_pdf, name="reading"),
+    path('read/<str:book_id>/', views.read, name="read"),
 
     # Favourites
     path('favourites/<str:book_id>/', views.favourite_add, name="favourite_add"),

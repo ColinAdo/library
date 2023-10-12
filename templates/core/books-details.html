@@ -46,7 +46,8 @@
         <a href="{% url 'favourite_add' b.bid %}">Save</a>
         {% endif %}
             
-        <a href="{% url 'reading' b.bid %}">Continue To Read</a>
+        <a href="{% url 'read' b.bid %}">Continue To Read</a>
+        <div><a href="{{b.pdf_file.url}}">Demo .........</a></div>
 
         {% else %}
         
@@ -63,7 +64,7 @@
         {% endif %}
         
         {% if not ongoing_progress and not progress %}
-            <a href="{% url 'read' b.bid %}">Read</a>
+            <a href="{% url 'read' b.bid %}">Begin To Read</a>
         {% endif %}
 
     {% endif %}

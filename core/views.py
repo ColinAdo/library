@@ -81,7 +81,7 @@ def search(request):
     return render(request, template, conetxt)
 
 @login_required(login_url='sign_in')
-def create_read(request, book_id):
+def read(request, book_id):
     template = 'core/read.html'
     user = request.user
     book = get_object_or_404(Book, bid=book_id)
@@ -92,22 +92,11 @@ def create_read(request, book_id):
         if created:
             created.set_finish_date()
     
-        
+    progress = Progress.objects.get(user=user, book=book, is_reading=True)    
     pdf_url = book.pdf_file.url
     context = {
         'pdf_url': pdf_url,
-    }
-
-    return render(request, template, context)
-
-@login_required(login_url='sign_in')
-def read_pdf(request, book_id):
-    template = 'core/read.html'
-    book = get_object_or_404(Book, bid=book_id)
-
-    pdf_url = book.pdf_file.url
-    context = {
-        'pdf_url': pdf_url,
+        'progress': progress
     }
 
     return render(request, template, context)
