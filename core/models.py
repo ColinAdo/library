@@ -7,7 +7,7 @@ from userAuths.models import CustomUser
 
 
 class Category(models.Model):
-    cid = ShortUUIDField(max_length=40, unique=True, prefix='category=?', alphabet='ASCdfghijkl167239')
+    cid = ShortUUIDField(max_length=40, unique=True, prefix='category/', alphabet='ASCdfghijkl167239')
     title = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -18,7 +18,7 @@ class Category(models.Model):
         return self.title
 
 class Book(models.Model):
-    bid = ShortUUIDField(max_length=40, unique=True, prefix='book=?', alphabet='ASCdfghijkl167239')
+    bid = ShortUUIDField(max_length=40, unique=True, prefix='book/', alphabet='ASCdfghijkl167239')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -37,7 +37,7 @@ class Book(models.Model):
         return self.title
 
 class Progress(models.Model):
-    pid = ShortUUIDField(max_length=40, unique=True, prefix='progress=?', alphabet='ASCdfghijkl167239')
+    pid = ShortUUIDField(max_length=40, unique=True, prefix='progress/', alphabet='ASCdfghijkl167239')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -68,7 +68,7 @@ class Progress(models.Model):
         return self.book.title
 
 class Review(models.Model):
-    rid = ShortUUIDField(max_length=40, unique=True, prefix='review=?', alphabet='ASCdfghijkl167239')
+    rid = ShortUUIDField(max_length=40, unique=True, prefix='review/', alphabet='ASCdfghijkl167239')
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     book = models.ForeignKey(Book, on_delete=models.SET_NULL,  null=True)
     comment = models.TextField()
