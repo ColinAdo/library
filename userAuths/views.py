@@ -60,16 +60,21 @@ def profile(request, username):
     template = 'auth/profile.html'
     login_user = request.user.id
     p = get_object_or_404(CustomUser, username=username)
-    
+
+    b = None
+    favourite_exists = None
+    likes_exists = None
     try:
         progress = Progress.objects.filter(user=p)
+        if b is not None:
+            for pro in progress:
+                b = get_object_or_404(Book, bid=pro.book.bid)
+
+                favourite_exists = b.favourites.filter(id=login_user).exists()
+                likes_exists = b.likes.filter(id=login_user).exists()
     except Progress.DoesNotExist:
         progress = None
-    for pro in progress:
-        b = get_object_or_404(Book, bid=pro.book.bid)
-
-    favourite_exists = b.favourites.filter(id=login_user).exists()
-    likes_exists = b.likes.filter(id=login_user).exists()
+    
     
     context = {
         'p': p,

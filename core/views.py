@@ -91,6 +91,7 @@ def read(request, book_id):
         created = Progress.objects.create(user=user, book=book, is_reading=True)
         if created:
             created.set_finish_date()
+            created.save()
     
     progress = Progress.objects.get(user=user, book=book, is_reading=True)    
     pdf_url = book.pdf_file.url
@@ -119,8 +120,10 @@ def favourite_list(request):
     books = Book.objects.filter(favourites=login_user).order_by('-date_posted')
 
     book = None
+    likes_exists = None
     for book in books:
-        likes_exists = book.likes.filter(id=login_user.id).exists()
+        if book is not None:
+            likes_exists = book.likes.filter(id=login_user.id).exists()
     context = {
         'p': p,
         'books': books,

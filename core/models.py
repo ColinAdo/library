@@ -45,11 +45,6 @@ class Progress(models.Model):
     is_reading = models.BooleanField(default=False, null=True)
     is_complete = models.BooleanField(default=False)
 
-    def mark_as_complete(self):
-        self.is_complete = True
-        self.finish_date = timezone.now()
-        self.save()
-
     def set_finish_date(self):
         self.finish_date = self.start_date + timedelta(days=7)
         self.save()
@@ -60,6 +55,11 @@ class Progress(models.Model):
             remaining = self.finish_date - timezone.now()
             return remaining.days
         return None
+    
+    def mark_as_complete(self):
+        self.is_complete = True
+        self.finish_date = timezone.now()
+        self.save()
 
     class Meta:
         verbose_name_plural = 'Progresses'
