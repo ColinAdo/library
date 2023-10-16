@@ -40,15 +40,14 @@
     <div>{{b.title}}</div>
     </a>
     <div>
-        {% if likes_exists %}
-            {% if b.likes.count == 0 %}
-            <a href="{% url 'likes_add' b.bid %}">Unlike Icon</a>
-            {% else %}
-            <a href="{% url 'likes_add' b.bid %}">Unlike Icon {{b.likes.count}}</a>
-            {% endif %}
+        
+         <a href="{% url 'likes_add' b.bid %}">
+        {% if b.id in liked_books %}
+            Unlike {{ b.likes.count }}
         {% else %}
-            <a href="{% url 'likes_add' b.bid %}">Like Icon {{b.likes.count}}</a>
+            Like {{ b.likes.count }}
         {% endif %}
+        </a>
 
         {% if b.review_count == 0 %} 
         {% else %}
