@@ -5,7 +5,11 @@
 {% block content %}
 <div id="book-container">
     <div class="top-bar">
+      {% if progress.days_remaining > 0 %}
       <small>Days remained ({{progress.days_remaining}})</small>
+      {% else %}
+      <small>Sent to you email</small>
+      {% endif %}
       <button class="btn" id="prev-page">
         <i class="fas fa-arrow-circle-left"></i> Prev Page
       </button>
