@@ -7,6 +7,8 @@ from .models import Book, Category, Review, Progress
 from .forms import ReviewForm
 from userAuths.models import CustomUser
 
+from .signals import send_completion_email_after_seven_days
+
 @login_required(login_url='sign_in')
 def home(request):
     template = 'core/index.html'
@@ -89,10 +91,12 @@ def read(request, book_id):
     if not book.readers.filter(id=user.id).exists():
         book.readers.add(user.id)
         created = Progress.objects.create(user=user, book=book, is_reading=True)
-        if created:
-            created.set_finish_date()
-            created.save()
-    
+        created.set_finish_date()
+        created.save()
+
+        # Use str() to convert the ShortUUID to a string
+        send_completion_email_after_seven_days.apply_async(args=[str(created.id)], countdown=2 * 60)  # Use 'created.id'
+
     progress = Progress.objects.get(user=user, book=book, is_reading=True)    
     pdf_url = book.pdf_file.url
     context = {

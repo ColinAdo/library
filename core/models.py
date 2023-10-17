@@ -5,6 +5,9 @@ from shortuuid.django_fields import ShortUUIDField
 
 from userAuths.models import CustomUser
 
+from django.utils import timezone
+import time
+
 
 class Category(models.Model):
     cid = ShortUUIDField(max_length=40, unique=True, prefix='category/', alphabet='ASCdfghijkl167239')
@@ -46,15 +49,16 @@ class Progress(models.Model):
     is_complete = models.BooleanField(default=False)
 
     def set_finish_date(self):
-        self.finish_date = self.start_date + timedelta(days=7)
+        self.finish_date = self.start_date + timedelta(minutes=2)  
         self.save()
 
     @property
     def days_remaining(self):
         if self.finish_date:
             remaining = self.finish_date - timezone.now()
-            return remaining.days
+            return int(remaining.total_seconds() / 60)
         return None
+
     
     def mark_as_complete(self):
         self.is_complete = True
