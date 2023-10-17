@@ -1,4 +1,5 @@
 ## TODO:
-#### Send email but not immediately
 #### Create read days countdown eg. Day:Hour:Minute:Second
-#### Add login redirect to the exact page it seek next
+#### short spinner when book is being is send to emails
+#### New book identifer
+#### Book completed should not be in homepage of the user
