@@ -12,7 +12,13 @@ from .signals import send_completion_email_after_seven_days
 @login_required(login_url='sign_in')
 def home(request):
     template = 'core/index.html'
-    books = Book.objects.annotate(review_count=Count('review')).order_by('-date_posted')
+    
+    # Get the user's completed progress books
+    completed_books = Progress.objects.filter(user=request.user, is_complete=True).values_list('book__id', flat=True)
+
+    # Query books excluding completed ones 
+    books = Book.objects.annotate(review_count=Count('review')).exclude(id__in=completed_books).order_by('-date_posted')
+
     context = {
         'books': books
     }
