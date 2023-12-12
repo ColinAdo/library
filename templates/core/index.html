@@ -19,7 +19,12 @@
             <div>{{b.title}}</div>
         </div>
      </div>
-    <div>{{b.title}}</div>
+    <div>
+        {{b.title}}
+        {% if b.is_new %}
+            <small>New Book</small>
+        {% endif %}
+    </div>
     </a>
     <div>
         {% if b.likes.count == 0 %}

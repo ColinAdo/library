@@ -21,7 +21,7 @@ class Category(models.Model):
         return self.title
 
 class Book(models.Model):
-    bid = ShortUUIDField(max_length=40, unique=True, prefix='book/', alphabet='ASCdfghijkl167239')
+    bid = ShortUUIDField(max_length=40, unique=True, prefix='book?', alphabet='ASCdfghijkl167239')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -32,6 +32,10 @@ class Book(models.Model):
     cover_image = models.ImageField(max_length=100, upload_to='books/cover')
     description = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
+
+    def is_new(self, threshold_days=7):
+        cuttoff = timezone.now() - timedelta(days=threshold_days)
+        return self.date_posted >= cuttoff
 
     class Meta:
         verbose_name_plural = 'Books'
