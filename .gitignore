@@ -7,3 +7,7 @@ userAuths/__pycache__/*
 library/__pycache__/*
 media/*
 .vscode/*
+.pytest_cache/
+.coverage
+htmlcov/
+pytest.ini
