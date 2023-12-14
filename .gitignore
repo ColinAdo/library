@@ -11,3 +11,5 @@ media/*
 .coverage
 htmlcov/
 pytest.ini
+tests/__pycache__/
+tests/core/__pycache__/
