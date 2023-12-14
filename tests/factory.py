@@ -37,3 +37,14 @@ class ReviewFactory(factory.django.DjangoModelFactory):
     comment = 'x'
     user = factory.SubFactory(UserFactory)
     book = factory.SubFactory(BookFactory)
+
+
+######################################## userAuths app ########################################################
+from userAuths.models import CustomUser
+
+class CustomUserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CustomUser
+    email = 'x'
+    username = 'x'
+    
