@@ -13,3 +13,4 @@ htmlcov/
 pytest.ini
 tests/__pycache__/
 tests/core/__pycache__/
+tests/userAuths/__pycache__/
