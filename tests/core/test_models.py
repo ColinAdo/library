@@ -34,43 +34,41 @@ class TestBookModel:
         assert outside_threshold.is_new() is True
 
 
-class TestProgressModel:
-    def test_str_return(self, progress_factory, book_factory):
-        book = book_factory(title="Test Progress")
-        progress = progress_factory(book=book)
+@pytest.fixture
+def book(request, book_factory):
+    return book_factory(title="Test Progress")
 
+
+@pytest.fixture
+def progress(request, progress_factory, book):
+    return progress_factory(book=book)
+
+
+class TestProgressModel:
+    def test_str_return(self, progress):
         assert progress.__str__() == "Test Progress"
 
-    def test_set_finish_date(self, progress_factory, book_factory):
-        book = book_factory(title="Test Progress")
-        progress = progress_factory(book=book)
-
+    def test_set_finish_date(self, progress):
         assert progress.finish_date is None
 
         progress.set_finish_date()
 
         assert progress.finish_date is not None
-        assert progress.finish_date == progress.start_date + timedelta(minutes=2)
+        assert progress.finish_date == progress.start_date + \
+            timedelta(minutes=2)
 
-    def test_days_remaining(self, progress_factory, book_factory):
-        book = book_factory(title="Test Progress")
-        progress = progress_factory(book=book)
-
+    def test_days_remaining(self, progress):
         assert progress.days_remaining is None
 
         progress.set_finish_date()
 
         assert progress.days_remaining is not None
 
-    def test_mark_as_complete(self, progress_factory, book_factory):
-        book = book_factory(title="Test Progress")
-        progress = progress_factory(book=book)
-
+    def test_mark_as_complete(self, progress):
         progress.mark_as_complete()
 
-        assert progress.is_complete == True
+        assert progress.is_complete is True
         assert progress.finish_date is not None
-
 
 class TestReviewModel:
     def test_str_return(self, review_factory):
