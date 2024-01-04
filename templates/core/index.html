@@ -2,13 +2,12 @@
 {% block title %} Home {% endblock title %} 
 
 {% block content %}
-<h2>Hello World</h2>
 {% for message in messages %}
     {% if message %}
     {{ message }}
     {% endif %}
 {% endfor %}
-<p>User is authenticated: {{ request.user.is_authenticated }}</p>
+<br>
 
     {% for b in books %}
     <a href="{% url 'book_details' b.bid %}">
