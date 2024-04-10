@@ -8,7 +8,6 @@ from userAuths.models import CustomUser
 from django.utils import timezone
 import time
 
-
 class Category(models.Model):
     cid = ShortUUIDField(max_length=40, unique=True, prefix='category/', alphabet='ASCdfghijkl167239')
     title = models.CharField(max_length=100)
