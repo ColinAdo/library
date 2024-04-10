@@ -178,7 +178,6 @@ def review_list(request, book_id):
         form = ReviewForm()
 
     ongoing_progress = Progress.objects.filter(user=user, is_complete=False).exists()
-
    
     favourite_exists = b.favourites.filter(id=login_user.id).exists()
     likes_exists = b.likes.filter(id=login_user.id).exists()
